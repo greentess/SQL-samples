@@ -1,5 +1,5 @@
 ALTER TABLE tovar ADD rating2020 INT;
---рейтинг товаров по количеству проданных товаров за определенный год
+--СЂРµР№С‚РёРЅРі С‚РѕРІР°СЂРѕРІ РїРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ РїСЂРѕРґР°РЅРЅС‹С… С‚РѕРІР°СЂРѕРІ Р·Р° РѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ РіРѕРґ
 CREATE PROC Ratingnew @year INT AS
 DECLARE @tovar int, @kol INT, @i INT
 DECLARE cur CURSOR FOR
@@ -26,7 +26,7 @@ exec Ratingnew 2020
 Select*from tovar ORDER by rating2020
 
 ALTER TABLE store ADD rating2020 VARCHAR(2);
---рейтинг книжных магазинов по количеству проданных товаров за определенный год по номерам
+--СЂРµР№С‚РёРЅРі РєРЅРёР¶РЅС‹С… РјР°РіР°Р·РёРЅРѕРІ РїРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ РїСЂРѕРґР°РЅРЅС‹С… С‚РѕРІР°СЂРѕРІ Р·Р° РѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ РіРѕРґ РїРѕ РЅРѕРјРµСЂР°Рј
 CREATE PROC Ratingnewforstore @year INT AS
 DECLARE @store int, @kol INT, @i INT
 DECLARE cur CURSOR FOR
@@ -50,7 +50,7 @@ DEALLOCATE cur
 
 exec Ratingnewforstore 2020
 
---рейтинг книжных магазинов по количеству проданных товаров за определенный год по категориям (5 категорий)
+--СЂРµР№С‚РёРЅРі РєРЅРёР¶РЅС‹С… РјР°РіР°Р·РёРЅРѕРІ РїРѕ РєРѕР»РёС‡РµСЃС‚РІСѓ РїСЂРѕРґР°РЅРЅС‹С… С‚РѕРІР°СЂРѕРІ Р·Р° РѕРїСЂРµРґРµР»РµРЅРЅС‹Р№ РіРѕРґ РїРѕ РєР°С‚РµРіРѕСЂРёСЏРј (5 РєР°С‚РµРіРѕСЂРёР№)
 CREATE PROC Ratingnewforstore2 AS
 DECLARE @store int, @rat VARCHAR
 DECLARE cur CURSOR FOR
@@ -77,12 +77,13 @@ DEALLOCATE cur
 
 exec Ratingnewforstore2 
 
---сколько в каждом городе книжных магазинов каждой категории
+--СЃРєРѕР»СЊРєРѕ РІ РєР°Р¶РґРѕРј РіРѕСЂРѕРґРµ РєРЅРёР¶РЅС‹С… РјР°РіР°Р·РёРЅРѕРІ РєР°Р¶РґРѕР№ РєР°С‚РµРіРѕСЂРёРё
 CREATE VIEW townRating as
 SELECT store_town, COUNT(store_num) as Count, rating2020 FROM
 store
 GROUP BY store_town, rating2020;
-SELECT * FROM townRating;
+SELECT * FROM townRating;
+
 
 
  
