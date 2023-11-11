@@ -7,11 +7,11 @@ SELECT * FROM fullSalesTable WHERE YEAR(receipt_date) NOT IN
 SELECT COUNT(*) FROM fullSalesTable
 SELECT COUNT(*) FROM sell
 
---около 2400 чеков из таблицы чек не были задействованы в таблице продаж - это плохо
+--РѕРєРѕР»Рѕ 2400 С‡РµРєРѕРІ РёР· С‚Р°Р±Р»РёС†С‹ С‡РµРє РЅРµ Р±С‹Р»Рё Р·Р°РґРµР№СЃС‚РІРѕРІР°РЅС‹ РІ С‚Р°Р±Р»РёС†Рµ РїСЂРѕРґР°Р¶ - СЌС‚Рѕ РїР»РѕС…Рѕ
 SELECT * FROM receipt WHERE receipt_num NOT IN
  (SELECT receipt_num FROM sell )
 
---для всех чеков которые еще не участвовали продажи добавляю продажи - товары всех категорий, кроме 1 (кроме книг)
+--РґР»СЏ РІСЃРµС… С‡РµРєРѕРІ РєРѕС‚РѕСЂС‹Рµ РµС‰Рµ РЅРµ СѓС‡Р°СЃС‚РІРѕРІР°Р»Рё РїСЂРѕРґР°Р¶Рё РґРѕР±Р°РІР»СЏСЋ РїСЂРѕРґР°Р¶Рё - С‚РѕРІР°СЂС‹ РІСЃРµС… РєР°С‚РµРіРѕСЂРёР№, РєСЂРѕРјРµ 1 (РєСЂРѕРјРµ РєРЅРёРі)
  CREATE PROCEDURE insert_sell_ostatok2
 AS
 DECLARE @rn Int
@@ -29,33 +29,33 @@ BEGIN
 				SET @x= RAND()
 		SET @bn=CEILING(RAND()*(1007))
 		SET @sn=CEILING(RAND()*(300))
-		IF @x<=0.4 -- с вероятностью 0.2 - 2 штуки
+		IF @x<=0.4 -- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.2 - 2 С€С‚СѓРєРё
 			SET @ver_rn=2
-		IF @x<=0.2-- с вероятностью 0.2 - 3 штуки
+		IF @x<=0.2-- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.2 - 3 С€С‚СѓРєРё
 			SET @ver_rn=3
-		IF @x<=0.1 -- с вероятностью 0.3 - 4 штуки
+		IF @x<=0.1 -- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.3 - 4 С€С‚СѓРєРё
 			SET @ver_rn=4
-		IF @x<=0.09 -- с вероятностью 0.1 - 5 штук
+		IF @x<=0.09 -- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.1 - 5 С€С‚СѓРє
 			 SET @ver_rn=5
-		IF @x>=0.5 -- с вероятностью 0.5 - 1 штуки
+		IF @x>=0.5 -- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.5 - 1 С€С‚СѓРєРё
 			SET @ver_rn=1
 
 		 WHILE @ver_rn>=1
 		 BEGIN
 			SET @y=RAND()
-						IF @y<=0.8 -- с вероятностью 0.3 - 7 штуки
+						IF @y<=0.8 -- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.3 - 7 С€С‚СѓРєРё
 						SET @count=7
-						IF @y<=0.5 -- с вероятностью 0.2 - 5 штук
+						IF @y<=0.5 -- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.2 - 5 С€С‚СѓРє
 						SET @count=5
-						IF @y<=0.3 -- с вероятностью 0.1 - 4 штук
+						IF @y<=0.3 -- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.1 - 4 С€С‚СѓРє
 						SET @count=4
-						IF @y<=0.2 -- с вероятностью 0.1 - 3 штук
+						IF @y<=0.2 -- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.1 - 3 С€С‚СѓРє
 						SET @count=3
-						IF @y<=0.1 -- с вероятностью 0.05 - 2 штук
+						IF @y<=0.1 -- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.05 - 2 С€С‚СѓРє
 						SET @count=2
-						IF @y<=0.05 -- с вероятностью 0.05 - 1 штук
+						IF @y<=0.05 -- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.05 - 1 С€С‚СѓРє
 						SET @count=1
-						IF @y>0.8 -- с вероятностью 0.2 - 6 штуки
+						IF @y>0.8 -- СЃ РІРµСЂРѕСЏС‚РЅРѕСЃС‚СЊСЋ 0.2 - 6 С€С‚СѓРєРё
 						SET @count=6
 
 			SET @tn=(SELECT TOP 1 tovar_num FROM tovar WHERE category_num=2  OR category_num=3 OR category_num=4  OR category_num=5 OR category_num=6  OR category_num=7 OR category_num=8 OR category_num=9  OR category_num=10  ORDER BY NEWID())
@@ -76,13 +76,13 @@ END
 GO
 Exec insert_sell_ostatok2
 
---все чеки участвуют в продажах
+--РІСЃРµ С‡РµРєРё СѓС‡Р°СЃС‚РІСѓСЋС‚ РІ РїСЂРѕРґР°Р¶Р°С…
 select*from sell order by receipt_num
---но теперь не во всех чеках указана скидка и общая стоимость
+--РЅРѕ С‚РµРїРµСЂСЊ РЅРµ РІРѕ РІСЃРµС… С‡РµРєР°С… СѓРєР°Р·Р°РЅР° СЃРєРёРґРєР° Рё РѕР±С‰Р°СЏ СЃС‚РѕРёРјРѕСЃС‚СЊ
 select*from receipt
 select*from tovar
 
---рассчитываем стоимость и скидку для добавленных чеков
+--СЂР°СЃСЃС‡РёС‚С‹РІР°РµРј СЃС‚РѕРёРјРѕСЃС‚СЊ Рё СЃРєРёРґРєСѓ РґР»СЏ РґРѕР±Р°РІР»РµРЅРЅС‹С… С‡РµРєРѕРІ
 CREATE PROC DiscountsFORostatok AS
 DECLARE cur1 CURSOR FOR SELECT receipt_num FROM receipt WHERE receipt_price IS NULL
 DECLARE @rn NUMERIC(6),
@@ -93,7 +93,7 @@ OPEN cur1
 FETCH cur1 INTO @rn
 WHILE @@FETCH_STATUS=0
  BEGIN
--- считаем сумму чека и процент скидки
+-- СЃС‡РёС‚Р°РµРј СЃСѓРјРјСѓ С‡РµРєР° Рё РїСЂРѕС†РµРЅС‚ СЃРєРёРґРєРё
 SELECT @sr=SUM(sell_price*sell_count), @k=
  (CASE
 WHEN @sr>5000 THEN 15
@@ -102,9 +102,9 @@ WHEN @sr>2000 AND @sr<=4999 THEN 10
 ELSE 0
  END)
  FROM sell WHERE @rn=receipt_num
--- записываем скидку в чек
+-- Р·Р°РїРёСЃС‹РІР°РµРј СЃРєРёРґРєСѓ РІ С‡РµРє
 UPDATE receipt SET  receipt_discount=@k WHERE @rn=receipt_num
--- уменьшаем цену в чеке на процент скидки
+-- СѓРјРµРЅСЊС€Р°РµРј С†РµРЅСѓ РІ С‡РµРєРµ РЅР° РїСЂРѕС†РµРЅС‚ СЃРєРёРґРєРё
 UPDATE receipt SET receipt_price=@sr*(100.0-@k)/100.0
 WHERE @rn=receipt_num
 FETCH cur1 INTO @rn
@@ -112,7 +112,7 @@ END
 DEALLOCATE cur1
 exec DiscountsFORostatok
 
---проверяем, что для всех чеков рассчитана стоимость и скидка
+--РїСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ РґР»СЏ РІСЃРµС… С‡РµРєРѕРІ СЂР°СЃСЃС‡РёС‚Р°РЅР° СЃС‚РѕРёРјРѕСЃС‚СЊ Рё СЃРєРёРґРєР°
 select*from receipt WHERE receipt_price IS NULL
 
 
