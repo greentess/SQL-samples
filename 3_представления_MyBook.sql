@@ -1,4 +1,4 @@
---сложный запрос, который содержит всю детальную информацию о продажах:
+ --СЃР»РѕР¶РЅС‹Р№ Р·Р°РїСЂРѕСЃ, РєРѕС‚РѕСЂС‹Р№ СЃРѕРґРµСЂР¶РёС‚ РІСЃСЋ РґРµС‚Р°Р»СЊРЅСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РїСЂРѕРґР°Р¶Р°С…:
 CREATE VIEW fullSalesViewNEWNEW AS
 SELECT sell_num, r.receipt_num, t.tovar_num, tovar_name, category_name, theme_name,author_name, buyer_name, buyer_date,buyer_gender, publisher_name,seller_name, dept_name,
  k.store_num, store_name,  store_town, receipt_date, t.tovar_price, sell_count
@@ -15,7 +15,7 @@ FROM sell s JOIN receipt r ON s.receipt_num=r.receipt_num
  Left JOIN book_author ba ON ba.tovar_num=t.tovar_num 
  Left JOIN author a ON a.author_num=ba.author_num
 
- --сложный запрос, который содержит  детальную информацию о продажах (без жанров книг):
+ --СЃР»РѕР¶РЅС‹Р№ Р·Р°РїСЂРѕСЃ, РєРѕС‚РѕСЂС‹Р№ СЃРѕРґРµСЂР¶РёС‚  РґРµС‚Р°Р»СЊРЅСѓСЋ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РїСЂРѕРґР°Р¶Р°С… (Р±РµР· Р¶Р°РЅСЂРѕРІ РєРЅРёРі):
  SELECT r.receipt_num, tovar_name, category_name, publisher_name,seller_name, dp.dept_num,
  store_name,  store_town, receipt_date,  t.tovar_price, sell_count
 FROM sell s JOIN receipt r ON s.receipt_num=r.receipt_num
@@ -50,45 +50,45 @@ CONSTRAINT pk_sales PRIMARY KEY(sell_num, tovar_name, buyer_name, seller_name, r
 INSERT INTO fullSalesTable SELECT * FROM fullSalesView
 SELECT * FROM fullSalesViewNEW
 
---Сколько единиц каждого товара и на какую сумму продано каждым продавцом?
-SELECT tovar_name AS НазваниеТовара, seller_name AS ИмяПродавца, SUM(sell_count) AS Количество, SUM(sell_count*tovar_price) AS Стоимость
+--РЎРєРѕР»СЊРєРѕ РµРґРёРЅРёС† РєР°Р¶РґРѕРіРѕ С‚РѕРІР°СЂР° Рё РЅР° РєР°РєСѓСЋ СЃСѓРјРјСѓ РїСЂРѕРґР°РЅРѕ РєР°Р¶РґС‹Рј РїСЂРѕРґР°РІС†РѕРј?
+SELECT tovar_name AS РќР°Р·РІР°РЅРёРµРўРѕРІР°СЂР°, seller_name AS РРјСЏРџСЂРѕРґР°РІС†Р°, SUM(sell_count) AS РљРѕР»РёС‡РµСЃС‚РІРѕ, SUM(sell_count*tovar_price) AS РЎС‚РѕРёРјРѕСЃС‚СЊ
 FROM fullSalesView
 GROUP BY tovar_name, seller_name
 
---Сколько единиц каждой категории товаров и на какую сумму продано в каждом отделе?
-SELECT category_name AS Категория, dept_name AS Отдел,
- SUM(sell_count) AS Количество,
- SUM(sell_count*tovar_price) AS Стоимость
+--РЎРєРѕР»СЊРєРѕ РµРґРёРЅРёС† РєР°Р¶РґРѕР№ РєР°С‚РµРіРѕСЂРёРё С‚РѕРІР°СЂРѕРІ Рё РЅР° РєР°РєСѓСЋ СЃСѓРјРјСѓ РїСЂРѕРґР°РЅРѕ РІ РєР°Р¶РґРѕРј РѕС‚РґРµР»Рµ?
+SELECT category_name AS РљР°С‚РµРіРѕСЂРёСЏ, dept_name AS РћС‚РґРµР»,
+ SUM(sell_count) AS РљРѕР»РёС‡РµСЃС‚РІРѕ,
+ SUM(sell_count*tovar_price) AS РЎС‚РѕРёРјРѕСЃС‚СЊ
 FROM fullSalesView GROUP BY category_name, dept_name
 
---Сколько единиц каждой категории товаров и на какую сумму продано в каждом городе?
-SELECT category_name AS Категория, store_town AS Город,
-SUM(sell_count) AS Количество,
-SUM(sell_count*tovar_price) AS Стоимость
+--РЎРєРѕР»СЊРєРѕ РµРґРёРЅРёС† РєР°Р¶РґРѕР№ РєР°С‚РµРіРѕСЂРёРё С‚РѕРІР°СЂРѕРІ Рё РЅР° РєР°РєСѓСЋ СЃСѓРјРјСѓ РїСЂРѕРґР°РЅРѕ РІ РєР°Р¶РґРѕРј РіРѕСЂРѕРґРµ?
+SELECT category_name AS РљР°С‚РµРіРѕСЂРёСЏ, store_town AS Р“РѕСЂРѕРґ,
+SUM(sell_count) AS РљРѕР»РёС‡РµСЃС‚РІРѕ,
+SUM(sell_count*tovar_price) AS РЎС‚РѕРёРјРѕСЃС‚СЊ
 FROM fullSalesView GROUP BY category_name, store_town
 
---На какую сумму продано книг в каждом книжном в порядке убывания итоговой суммы?
-SELECT store_name AS Книжный, SUM(sell_count*tovar_price) AS Стоимость
+--РќР° РєР°РєСѓСЋ СЃСѓРјРјСѓ РїСЂРѕРґР°РЅРѕ РєРЅРёРі РІ РєР°Р¶РґРѕРј РєРЅРёР¶РЅРѕРј РІ РїРѕСЂСЏРґРєРµ СѓР±С‹РІР°РЅРёСЏ РёС‚РѕРіРѕРІРѕР№ СЃСѓРјРјС‹?
+SELECT store_name AS РљРЅРёР¶РЅС‹Р№, SUM(sell_count*tovar_price) AS РЎС‚РѕРёРјРѕСЃС‚СЊ
 FROM fullSalesView
-WHERE category_name='книга'
+WHERE category_name='РєРЅРёРіР°'
 GROUP BY store_name
 ORDER BY 2 DESC
 
---суммы продаж книг в жанре 'Научно-образовательная литература' по месяцам в порядке убывания итогов?
-SELECT MONTH(receipt_date) AS Месяц,
-SUM(sell_count*tovar_price) AS Стоимость
+--СЃСѓРјРјС‹ РїСЂРѕРґР°Р¶ РєРЅРёРі РІ Р¶Р°РЅСЂРµ 'РќР°СѓС‡РЅРѕ-РѕР±СЂР°Р·РѕРІР°С‚РµР»СЊРЅР°СЏ Р»РёС‚РµСЂР°С‚СѓСЂР°' РїРѕ РјРµСЃСЏС†Р°Рј РІ РїРѕСЂСЏРґРєРµ СѓР±С‹РІР°РЅРёСЏ РёС‚РѕРіРѕРІ?
+SELECT MONTH(receipt_date) AS РњРµСЃСЏС†,
+SUM(sell_count*tovar_price) AS РЎС‚РѕРёРјРѕСЃС‚СЊ
 FROM fullSalesView
-WHERE theme_name='Научно-образовательная литература'
+WHERE theme_name='РќР°СѓС‡РЅРѕ-РѕР±СЂР°Р·РѕРІР°С‚РµР»СЊРЅР°СЏ Р»РёС‚РµСЂР°С‚СѓСЂР°'
 GROUP BY MONTH(receipt_date)
 ORDER BY 2 DESC
 
---На какую стоимость в разные месяцы были проданы товары разных категорий? 
+--РќР° РєР°РєСѓСЋ СЃС‚РѕРёРјРѕСЃС‚СЊ РІ СЂР°Р·РЅС‹Рµ РјРµСЃСЏС†С‹ Р±С‹Р»Рё РїСЂРѕРґР°РЅС‹ С‚РѕРІР°СЂС‹ СЂР°Р·РЅС‹С… РєР°С‚РµРіРѕСЂРёР№? 
 CREATE VIEW ViewExcel AS
-SELECT category_name AS Категория,  MONTH(receipt_date) AS Месяц,
-SUM(sell_count*tovar_price) AS Стоимость
+SELECT category_name AS РљР°С‚РµРіРѕСЂРёСЏ,  MONTH(receipt_date) AS РњРµСЃСЏС†,
+SUM(sell_count*tovar_price) AS РЎС‚РѕРёРјРѕСЃС‚СЊ
 FROM fullSalesView GROUP BY category_name, MONTH(receipt_date)
 
---А сколько реализовано товара с названием «Товар 136» в «Книжный магазин 44» за 2018 год?
+--Рђ СЃРєРѕР»СЊРєРѕ СЂРµР°Р»РёР·РѕРІР°РЅРѕ С‚РѕРІР°СЂР° СЃ РЅР°Р·РІР°РЅРёРµРј В«РўРѕРІР°СЂ 136В» РІ В«РљРЅРёР¶РЅС‹Р№ РјР°РіР°Р·РёРЅ 44В» Р·Р° 2018 РіРѕРґ?
 CREATE PROC detailSales
 @store_name VARCHAR(100),
 @tovar_name VARCHAR(100),
@@ -99,10 +99,10 @@ WHERE store_name=@store_name AND tovar_name=@tovar_name  AND
 YEAR(receipt_date)=@year 
 GO
 EXEC detailSales
-'Книжный магазин 44', 'Товар 136', 2018
+'РљРЅРёР¶РЅС‹Р№ РјР°РіР°Р·РёРЅ 44', 'РўРѕРІР°СЂ 136', 2018
 
 
---Таблица, в которой столбцы -  месяцы, а строки -   жанры книг и итоги продаж по месяцам?
+--РўР°Р±Р»РёС†Р°, РІ РєРѕС‚РѕСЂРѕР№ СЃС‚РѕР»Р±С†С‹ -  РјРµСЃСЏС†С‹, Р° СЃС‚СЂРѕРєРё -   Р¶Р°РЅСЂС‹ РєРЅРёРі Рё РёС‚РѕРіРё РїСЂРѕРґР°Р¶ РїРѕ РјРµСЃСЏС†Р°Рј?
 
 SELECT  theme_name, [01], [02] ,[03], [04], [05] ,[06], [07], [08], [09], [10], [11], [12]
 FROM (  
